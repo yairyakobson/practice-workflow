@@ -1,0 +1,20 @@
+name: Lint Script Workflow
+
+# When will the workflow be executed
+on:
+  push:
+  workflow_dispatch:
+
+# Operations
+jobs:
+  lint-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v4
+          
+      - name: Install dependencies
+        run: npm ci # Installs dependencies locked in the package-lock.json file
+      
+      - name: Lint Execution
+        run: npm run lint

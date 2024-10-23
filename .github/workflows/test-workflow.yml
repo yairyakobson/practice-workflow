@@ -1,0 +1,24 @@
+name: Test Script Workflow
+
+# When will the workflow be executed
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Lint Script Workflow"]  # Name of the test workflow
+    types:
+      - completed
+
+# Operations
+jobs:
+  test-job:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}  # Ensure the workflow only runs if the previous one succeeded
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v4
+          
+      - name: Install dependencies
+        run: npm ci # Installs dependencies locked in the package-lock.json file
+      
+      - name: Test Execution
+        run: npm run test
