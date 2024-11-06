@@ -1,0 +1,98 @@
+name: Artifacts And Outputs Workflow
+
+on: push
+
+# Operations
+jobs:
+  lint-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v4
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+          
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Lint Execution
+        run: npm run lint
+
+  test-job:
+    needs: lint-job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v4
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Test Execution
+        run: npm run test
+
+  build-job: # Generates a dist folder using the npm run build command
+    needs: test-job
+    runs-on: ubuntu-latest
+    outputs:
+      script-file: ${{ steps.publisher.outputs.script-file }}
+    steps:
+      - name: Get code
+        uses: actions/checkout@v4
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+          
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build Execution
+        run: npm run build
+
+      - name: Publish Files
+        id: publisher
+        shell: pwsh
+        run: |
+          $file = Get-ChildItem -Path dist/assets -Filter *.js | Select-Object -First 1
+          $output = "./$($file.Name)"
+          echo "script-file=$output" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4 # Uploading artifacts action
+        with:
+          name: dist-files # Name of the artifact files (any name you want)
+          path: dist # Path of the artifact files
+
+  deploy-job:
+    needs: build-job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-files
+
+      - name: Output Files
+        run: ls # Lists the files of our current folder
+
+      - name: Output Filename
+        env:
+          SCRIPT_FILE: ${{ needs.build-job.outputs.script-file }}
+        run: |
+          echo "Filename: $SCRIPT_FILE"
+
+      - name: Deploy
+        run: echo "Deploying..."
