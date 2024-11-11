@@ -12,7 +12,6 @@ jobs:
     services:
       docker:
         image: node:22
-        options: --privileged
     env:
       MONGODB_CONNECTION_PROTOCOL: mongodb+srv
       MONGODB_CLUSTER_ADDRESS: ${{ secrets.MONGODB_CLUSTER_ADDRESS }}
@@ -28,14 +27,6 @@ jobs:
         with:
           path: ~/.npm
           key: ${{ env.CACHE_KEY }}-${{ hashFiles('**/package-lock.json') }}
-
-      - name: Build Docker image
-        run: |
-          docker build \
-            --build-arg MONGODB_CLUSTER_ADDRESS=${{ secrets.MONGODB_CLUSTER_ADDRESS }} \
-            --build-arg MONGODB_USERNAME=${{ secrets.MONGODB_USERNAME }} \
-            --build-arg MONGODB_PASSWORD=${{ secrets.MONGODB_PASSWORD }} \
-            -t jobs-and-containers-project .
 
       - name: Install dependencies
         run: npm ci
