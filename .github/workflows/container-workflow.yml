@@ -8,7 +8,7 @@ jobs:
   test-job:
     environment: testing
     runs-on: ubuntu-latest
-    container: node:22 # container name from the docker hub
+    container: node:20 # container name from the docker hub
     services:
       docker:
         image: docker:20.10.7-dind

@@ -1,4 +1,4 @@
-FROM node:22
+FROM node:20
 
 # Define build arguments for sensitive data
 ARG MONGODB_DB_NAME
