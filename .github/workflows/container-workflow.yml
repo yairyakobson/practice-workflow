@@ -8,11 +8,7 @@ jobs:
   test-job:
     environment: testing
     runs-on: ubuntu-latest
-    container: node # container name from the docker hub
-    services:
-      docker:
-        image: docker:22.11.0-dind
-        options: --privileged
+    container: node:latest # container name from the docker hub
     env:
       MONGODB_CONNECTION_PROTOCOL: mongodb+srv
       MONGODB_CLUSTER_ADDRESS: ${{ secrets.MONGODB_CLUSTER_ADDRESS }}
