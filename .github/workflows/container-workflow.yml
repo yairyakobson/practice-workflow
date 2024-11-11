@@ -16,8 +16,6 @@ jobs:
       MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
       PORT: 8080
     services:
-      docker:
-        image: node:22
       mongo:
         image: mongo:8
         env:
