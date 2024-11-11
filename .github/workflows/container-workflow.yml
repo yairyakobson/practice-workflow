@@ -9,15 +9,20 @@ jobs:
     environment: testing
     runs-on: ubuntu-latest
     container: node:22 # container name from the docker hub
-    services:
-      docker:
-        image: node:22
     env:
       MONGODB_CONNECTION_PROTOCOL: mongodb+srv
       MONGODB_CLUSTER_ADDRESS: ${{ secrets.MONGODB_CLUSTER_ADDRESS }}
       MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
       MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
       PORT: 8080
+    services:
+      docker:
+        image: node:22
+      mongo:
+        image: mongo:8
+        env:
+          MONGO_INITDB_ROOT_USERNAME: ${{ secrets.MONGODB_USERNAME }}
+          MONGO_INITDB_ROOT_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
     steps:
       - name: Get Code
         uses: actions/checkout@v4
