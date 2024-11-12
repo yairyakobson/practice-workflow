@@ -2,6 +2,19 @@
 
 name: 'AWS S3 Deployment'
 description: 'Deployment of JS to AWS S3'
+inputs:
+  bucket:
+    description: JavaScript's S3 Bucket Name
+    required: true
+
+  bucket-region:
+    description: JavaScript's S3 Bucket Region
+    required: false
+    default: 'il-central-1'
+
+  dist-folder:
+    description: Website Folder
+    required: true
 
 runs:
   using: 'node20'
