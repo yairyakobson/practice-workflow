@@ -16,6 +16,10 @@ inputs:
     description: Website Folder
     required: true
 
+outputs:
+  website-url:
+    description: 'Deployed website URL'
+
 runs:
   using: 'node20'
   #pre: # This file will be executed before the main file
