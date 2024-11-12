@@ -1,0 +1,12 @@
+# JavaScript Action Using AWS S3
+
+name: 'AWS S3 Deployment'
+description: 'Deployment of JS to AWS S3'
+
+runs:
+  using: 'node20'
+  #pre: # This file will be executed before the main file
+
+  main: 'main.js' # The main file which will be executed with this action
+  
+  #post: # This file will be executed after the main file

@@ -77,3 +77,9 @@ jobs:
         run: ls
       - name: Deploy site
         run: echo "Deploying..."
+
+  info-job: # JavaScript Action
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: ./.github/actions/js-action
