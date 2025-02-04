@@ -1,0 +1,31 @@
+name: Matrix Workflow
+
+on: push
+
+jobs:
+  build-job:
+    strategy:
+      matrix:
+        node-version: [16, 18, 20]
+        os: [ubuntu-latest, windows-latest]
+        include:
+          - node-version: 20
+            os: windows-latest
+        exclude:
+          - node-version: 20
+            os: ubuntu-latest
+    runs-on: ${{ matrix.os }} # Will run in parallel the action once per os (6 times)
+    steps:
+      - name: Get Code
+        uses: actions/checkout@v4
+
+      - name: Install NodeJS
+        uses: actions/setup-node@v4  
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Build Project
+        run: npm run build
