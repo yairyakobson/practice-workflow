@@ -12,11 +12,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.21.1",
-    "mongodb": "^6.10.0"
+    "express": "^4.21.2",
+    "mongodb": "^6.13.0"
   },
   "devDependencies": {
-    "@playwright/test": "^1.48.2",
-    "playwright": "^1.48.2"
+    "@playwright/test": "^1.50.1",
+    "playwright": "^1.50.1"
   }
 }
